@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIBEMA | Discover Arab's Hidden Gems</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        arabgreen: {
+                            50: '#E6F2EB',
+                            100: '#CDE5D7',
+                            500: '#00994C',
+                            600: '#007A3D', // Primary Emerald Green
+                            700: '#005C2E',
+                            800: '#003D1F',
+                            900: '#002914',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-color: #FFFFFF;
+            color: #333333;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F3F4F6; }
+        ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #007A3D; }
+
+        /* Arabian Gold Particles Animation */
+        .particle {
+            position: fixed;
+            top: -10%;
+            z-index: 1; /* Behind content */
+            user-select: none;
+            pointer-events: none;
+            background-color: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.6);
+            opacity: 0.6;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translate3d(0,0,0); opacity: 0.8; }
+            100% { transform: translate3d(5vw, 110vh, 0); opacity: 0; }
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gallery Hover */
+        .gallery-img {
+            cursor: zoom-in;
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+        .gallery-img:hover {
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+
+        /* Lightbox */
+        #lightbox {
+            backdrop-filter: blur(8px);
+            transition: opacity 0.3s ease;
+        }
+        #lightbox.hidden { opacity: 0; pointer-events: none; }
+        #lightbox:not(.hidden) { opacity: 1; pointer-events: auto; }
+
+        /* Tabs Content Transition */
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .tab-pane.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Voting Progress Bar */
+        .progress-bar { transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Typing cursor effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #007A3D;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Hero Overlay */
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,1) 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-arabgreen-600 selection:text-white relative">
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-40 top-0 bg-white/90 backdrop-blur-lg shadow-sm border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer flex items-center gap-2" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 bg-arabgreen-600 rounded-full flex items-center justify-center text-white shadow-md shadow-arabgreen-100">
+                        <i class="fa-solid fa-moon text-sm"></i>
+                    </div>
+                    <span class="font-bold text-2xl tracking-wide text-gray-900">SIBEMA</span>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#alula" class="text-sm font-medium text-gray-600 hover:text-arabgreen-600 transition">AlUla</a>
+                    <a href="#wadishab" class="text-sm font-medium text-gray-600 hover:text-arabgreen-600 transition">Wadi Shab</a>
+                    <a href="#chefchaouen" class="text-sm font-medium text-gray-600 hover:text-arabgreen-600 transition">Chefchaouen</a>
+                    
+                    <!-- Linktree Button -->
+                    <a href="https://linktr.ee/himabsaunnesinfo_" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-gray-900 text-white px-6 py-2.5 rounded-full hover:bg-arabgreen-600 hover:shadow-lg hover:shadow-arabgreen-100 transition-all duration-300 text-sm font-semibold shadow-md">
+                        <i class="fa-solid fa-circle-info"></i> Info & HIMA
+                    </a>
+                </div>
+
+                <!-- Mobile Button -->
+                <div class="lg:hidden flex items-center">
+                    <a href="https://linktr.ee/himabsaunnesinfo_" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-900 text-white rounded-full flex items-center justify-center hover:bg-arabgreen-600 transition-colors shadow-md">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative pt-36 pb-20 overflow-hidden relative z-10 flex flex-col items-center justify-center min-h-[70vh]">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1543884813-f9cf13985ee1?auto=format&fit=crop&q=80&w=2000" alt="Arabian Desert" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center reveal">
+            <!-- Decorative accent -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-arabgreen-600 rounded-full opacity-10 blur-3xl -z-10"></div>
+            
+            <span class="inline-block py-1 px-4 rounded-full bg-arabgreen-50 text-arabgreen-600 text-xs font-bold tracking-widest uppercase mb-6 border border-arabgreen-100 shadow-sm">
+                <i class="fa-solid fa-star mr-1"></i> Keajaiban Timur Tengah & Afrika Utara
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
+                Discover the <br/>
+                <span class="text-arabgreen-600 relative inline-block">
+                    Hidden Gems
+                    <svg class="absolute w-full h-3 -bottom-1 left-0 text-arabgreen-100" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/></svg>
+                </span> <br/> of the Arab World
+            </h1>
+            <p id="typing-text" class="text-gray-600 max-w-2xl mx-auto text-lg mb-10 font-medium h-16 typing-cursor">
+                <!-- Text will be typed here by JS -->
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10 pb-20">
+        
+        <!-- ================= 1. ALULA ================= -->
+        <section id="alula" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-32 scroll-mt-32 reveal">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">AlUla — Hegra</h2>
+                <p class="text-arabgreen-600 font-medium text-lg">Arab Saudi 🇸🇦</p>
+            </div>
+
+            <!-- Galeri AlUla (3 Foto) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="md:col-span-2 h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg relative group bg-gray-200">
+                    <img src="https://i.pinimg.com/1200x/5e/90/69/5e9069c2c1d7d49dc212dec6f678df78.jpg" class="w-full h-full object-cover gallery-img" alt="Hegra AlUla" onclick="openLightbox(this.src)">
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-1 gap-4 h-32 md:h-96">
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/1200x/af/51/df/af51df25744d8b41d96b6fa033c1009a.jpg" class="w-full h-full object-cover gallery-img" alt="Batu Gajah AlUla" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/1200x/9d/59/3c/9d593c6f855269827fb5653d72958cdc.jpg" class="w-full h-full object-cover gallery-img" alt="Gurun Pasir AlUla" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS ALULA -->
+            <div class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 md:p-10">
+                <div class="flex flex-wrap gap-2 md:gap-3 mb-8 border-b border-gray-100 pb-6">
+                    <button onclick="switchTab('al', 'desc', this)" class="al-tab-btn active-tab px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-arabgreen-600 text-white shadow-md shadow-arabgreen-100">Deskripsi</button>
+                    <button onclick="switchTab('al', 'origin', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Asal Usul</button>
+                    <button onclick="switchTab('al', 'culture', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Budaya</button>
+                    <button onclick="switchTab('al', 'food', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Kuliner</button>
+                    <button onclick="switchTab('al', 'funfact', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Fun Fact</button>
+                    <button onclick="switchTab('al', 'tips', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Travel Tips</button>
+                    <button onclick="switchTab('al', 'map', this)" class="al-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200"><i class="fa-solid fa-map-location-dot mr-1 pointer-events-none"></i> Location</button>
+                </div>
+
+                <div class="relative min-h-[300px]">
+                    <div id="al-desc" class="tab-pane active al-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Museum Terbuka di Tengah Gurun</h3>
+                        <p>AlUla adalah kawasan kuno di barat laut Arab Saudi yang menyimpan kekayaan sejarah yang belum banyak tersentuh. Destinasi utamanya, **Hegra (Mada'in Salih)**, adalah Situs Warisan Dunia UNESCO pertama di Arab Saudi.</p>
+                        <p>Dengan formasi batu pasir vulkanik yang menakjubkan dan oasis hijau yang dipenuhi pohon palem, AlUla menawarkan pemandangan magis yang seolah membawa pengunjung kembali ke ribuan tahun silam.</p>
+                    </div>
+
+                    <div id="al-origin" class="tab-pane al-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Pusat Peradaban Nabatean</h3>
+                        <p>Hegra dibangun oleh kaum Nabatean (peradaban yang sama yang membangun Petra di Yordania) lebih dari 2.000 tahun yang lalu. Kawasan ini dulunya merupakan persimpangan rute perdagangan dupa dan rempah-rempah yang sangat penting di Semenanjung Arab.</p>
+                        <p>Terdapat lebih dari 110 makam monumental yang diukir langsung ke dalam tebing batu raksasa, dengan inskripsi kuno yang masih terlihat jelas hingga hari ini.</p>
+                    </div>
+
+                    <div id="al-culture" class="tab-pane al-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Seni Ukir Batu & Keramahan Badui</h3>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/2 space-y-4 text-gray-700 leading-relaxed">
+                                <p>Budaya di AlUla berakar dalam pada tradisi nomaden Badui Arab yang sangat menghargai keramahan (hospitality). Menyambut tamu dengan kopi Arab yang kuat dan kurma adalah kebiasaan yang tidak pernah pudar.</p>
+                                <p>Secara arsitektur, ukiran pada makam-makam di Hegra menggabungkan pengaruh dari peradaban Asiria, Mesir, dan Helenistik, menunjukkan betapa majunya pemahaman seni dan teknik masyarakat purba ini.</p>
+                            </div>
+                            <div class="md:w-1/2 w-full">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4PAR2pE9DuRkhYUI5T1E403pMhxAJQ7U1-GdEfCsZiRKDZP26XwjzjcM&s=10" alt="Detail Ukiran Hegra" class="rounded-xl shadow-md w-full h-64 object-cover">
+                                <p class="text-xs text-gray-400 mt-2 text-center italic">Detail arsitektur makam Nabatean yang dipahat pada batu utuh.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KULINER ALULA (GRID 2 KARTU) -->
+                    <div id="al-food" class="tab-pane al-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Kuliner Khas Arab Saudi</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card 1 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0SkX0vVc6rZzme04FYwF-W7cSb1yiNKAmlQdriRHHgRO_NC-xxe9VGPp-&s=10" alt="Kabsa" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Kabsa</h4>
+                                    <p class="text-sm text-gray-600">Hidangan nasional Arab Saudi. Terdiri dari nasi basmati panjang yang dimasak dengan kaldu daging (biasanya kambing atau ayam), tomat, dan campuran rempah-rempah yang kaya seperti kapulaga, cengkeh, kayu manis, dan saffron.</p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbO4tULvFUOEIJYj89fb_3HEYn7gDjxlFJkskU7BIOEnMRCosXyYpMHSQB&s=10" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Gahwa & Kurma AlUla</h4>
+                                    <p class="text-sm text-gray-600">Kopi tradisional Arab (*Gahwa*) yang ringan, beraroma kapulaga, dan tidak memakai gula. Selalu disajikan bersama kurma lokal yang manis legit sebagai penyeimbang rasa, simbol utama keramahtamahan Arab.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="al-funfact" class="tab-pane al-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Fakta Menarik</h3>
+                        <ul class="space-y-3">
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Maraya Concert Hall:</strong> Di AlUla terdapat bangunan berlapis kaca cermin terbesar di dunia yang memantulkan keindahan gurun pasir di sekelilingnya secara epik.</li>
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Lama Tertutup:</strong> Hegra dan AlUla baru dibuka secara luas untuk pariwisata internasional pada akhir tahun 2019, menjadikannya benar-benar "Hidden Gem".</li>
+                        </ul>
+                    </div>
+
+                    <div id="al-tips" class="tab-pane al-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Travel Tips</h3>
+                        <p><strong>Waktu Berkunjung:</strong> Kunjungi pada musim dingin (November hingga Maret) ketika suhu siang hari lebih bersahabat untuk menjelajahi situs-situs terbuka di gurun.</p>
+                        <p><strong>Stargazing:</strong> Jangan lewatkan kesempatan mengikuti tur melihat bintang di malam hari. Karena jauh dari polusi cahaya kota, langit malam AlUla sangat jernih dan spektakuler.</p>
+                    </div>
+
+                    <!-- AlUla Location -->
+                    <div id="al-map" class="tab-pane al-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Lokasi Google Maps</h3>
+                        <div class="shadow-lg border border-gray-200 bg-gray-100 rounded-xl overflow-hidden relative">
+                            <iframe src="https://maps.google.com/maps?q=Hegra,+AlUla,+Saudi+Arabia&t=&z=11&ie=UTF8&iwloc=&output=embed" width="100%" height="400" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= 2. WADI SHAB ================= -->
+        <section id="wadishab" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-32 scroll-mt-32 reveal">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">Wadi Shab Canyon</h2>
+                <p class="text-arabgreen-600 font-medium text-lg">Oman 🇴🇲</p>
+            </div>
+
+            <!-- Galeri Wadi Shab -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="md:col-span-2 h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg relative group bg-gray-200 md:order-2">
+                    <img src="https://i.pinimg.com/1200x/af/b5/d6/afb5d68cb814c1f7af02c2c8b2e09690.jpg" class="w-full h-full object-cover gallery-img" alt="Wadi Shab Pools" onclick="openLightbox(this.src)">
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-1 gap-4 h-32 md:h-96 md:order-1">
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/1200x/bf/70/f9/bf70f9d4b5128e466864216ca746f4fd.jpg" class="w-full h-full object-cover gallery-img" alt="Trekking Wadi Shab" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/1200x/e1/69/07/e1690763867a0a1c873cd1c25239efc9.jpg" alt="Keindahan Oman" class="w-full h-full object-cover gallery-img" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS WADI SHAB -->
+            <div class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 md:p-10">
+                <div class="flex flex-wrap gap-2 md:gap-3 mb-8 border-b border-gray-100 pb-6">
+                    <button onclick="switchTab('ws', 'desc', this)" class="ws-tab-btn active-tab px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-arabgreen-600 text-white shadow-md shadow-arabgreen-100">Deskripsi</button>
+                    <button onclick="switchTab('ws', 'origin', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Asal Usul</button>
+                    <button onclick="switchTab('ws', 'culture', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Budaya</button>
+                    <button onclick="switchTab('ws', 'food', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Kuliner</button>
+                    <button onclick="switchTab('ws', 'funfact', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Fun Fact</button>
+                    <button onclick="switchTab('ws', 'tips', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Travel Tips</button>
+                    <button onclick="switchTab('ws', 'map', this)" class="ws-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200"><i class="fa-solid fa-map-location-dot mr-1 pointer-events-none"></i> Location</button>
+                </div>
+
+                <div class="relative min-h-[300px]">
+                    <div id="ws-desc" class="tab-pane active ws-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Oasis Hijau di Ngarai Bebatuan</h3>
+                        <p>Wadi Shab adalah salah satu ngarai (lembah) terindah di Kesultanan Oman. Tempat ini menawarkan perpaduan spektakuler antara tebing berbatu dramatis, kebun palem yang rimbun, dan kolam alami berwarna zamrud yang memukau.</p>
+                        <p>Untuk mencapai pesona utamanya, pengunjung harus mendaki, berjalan menyusuri ngarai, hingga berenang melewati celah gua kecil untuk menemukan air terjun rahasia di dalamnya.</p>
+                    </div>
+
+                    <div id="ws-origin" class="tab-pane ws-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Sistem Irigasi Kuno Falaj</h3>
+                        <p>Wadi secara harfiah berarti lembah sungai yang kering namun akan terisi air saat hujan lebat. Namun di Wadi Shab, aliran air tawar terus mengalir sepanjang tahun berkat mata air pegunungan Hajar.</p>
+                        <p>Di tempat ini, Anda akan melihat sisa-sisa *Falaj*, sistem irigasi kuno khas Oman yang telah digunakan selama ribuan tahun untuk mengalirkan air dari sumber pegunungan ke desa-desa dan kebun kurma di sekitarnya.</p>
+                    </div>
+
+                    <div id="ws-culture" class="tab-pane ws-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Kehidupan Santai Khas Oman</h3>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/2 space-y-4 text-gray-700 leading-relaxed">
+                                <p>Masyarakat Oman dikenal sangat damai, bersahabat, dan menjaga kelestarian alam. Budaya mereka berfokus pada ketenangan dan ikatan dengan alam, sangat kontras dengan kota-kota metropolis di negara Teluk lainnya.</p>
+                                <p>Pengunjung sering kali akan dibantu oleh penduduk lokal yang menyewakan perahu kecil melintasi sungai di awal rute menuju Wadi Shab, memperlihatkan gaya hidup pedesaan yang bersahaja.</p>
+                            </div>
+                            <div class="md:w-1/2 w-full">
+                                <img src="https://i.pinimg.com/1200x/27/5f/69/275f693475cd2032214b0649b04bf3d0.jpg" alt="Budaya Oman" class="rounded-xl shadow-md w-full h-64 object-cover">
+                                <p class="text-xs text-gray-400 mt-2 text-center italic">Arsitektur pedesaan tradisional dan masyarakat Oman yang bersahaja.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KULINER WADI SHAB (GRID 2 KARTU) -->
+                    <div id="ws-food" class="tab-pane ws-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Kuliner Khas Oman</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card 1 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://i.pinimg.com/736x/f2/c3/f1/f2c3f189dd314fb5754b5bcdb0223a46.jpg" alt="c" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Shuwa</h4>
+                                    <p class="text-sm text-gray-600">Hidangan perayaan khas Oman. Daging (kambing atau domba) dibumbui tebal dengan pasta rempah, dibungkus dengan daun pisang, lalu dipanggang secara lambat (slow-cooked) di dalam oven lubang tanah selama 1-2 hari! Dagingnya sangat lembut hingga meleleh di mulut.</p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://i.pinimg.com/736x/aa/f8/93/aaf893068358aee257ff088d349a8325.jpg" alt="Omani Halwa" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Omani Halwa</h4>
+                                    <p class="text-sm text-gray-600">Makanan manis berbentuk jeli kental lengket yang ikonik. Terbuat dari gula karamel, pati, air mawar, saffron, kapulaga, dan kacang-kacangan. Selalu disajikan hangat saat menyambut tamu sebagai teman minum kopi tanpa gula.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ws-funfact" class="tab-pane ws-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Fakta Menarik</h3>
+                        <ul class="space-y-3">
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Gua Rahasia:</strong> Kolam terakhir di Wadi Shab mengharuskan Anda berenang melewati celah batu yang sangat sempit untuk masuk ke gua berair terjun deras di dalamnya.</li>
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Aman dari Buaya:</strong> Meski berbentuk sungai dan lembah liar, tidak ada predator mematikan atau buaya di kolam wadi ini, sehingga aman untuk berenang.</li>
+                        </ul>
+                    </div>
+
+                    <div id="ws-tips" class="tab-pane ws-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Travel Tips</h3>
+                        <p><strong>Gunakan Sepatu Air:</strong> Jalur pendakian dipenuhi kerikil licin dan bebatuan tajam di dalam kolam. Sepatu air (water shoes) adalah barang yang wajib dipakai.</p>
+                        <p><strong>Bawa Dry Bag:</strong> Karena Anda harus berenang untuk mencapai gua terakhir, bawalah tas anti-air kecil (dry bag) untuk menyimpan ponsel dan kamera Anda.</p>
+                    </div>
+
+                    <div id="ws-map" class="tab-pane ws-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Lokasi Google Maps</h3>
+                        <div class="shadow-lg border border-gray-200 bg-gray-100 rounded-xl overflow-hidden relative">
+                            <iframe src="https://maps.google.com/maps?q=Wadi+Shab,+Oman&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="400" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= 3. CHEFCHAOUEN ================= -->
+        <section id="chefchaouen" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-mt-32 reveal">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">Chefchaouen</h2>
+                <p class="text-arabgreen-600 font-medium text-lg">Maroko 🇲🇦</p>
+            </div>
+
+            <!-- Galeri Chefchaouen -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="md:col-span-2 h-72 md:h-96 rounded-2xl overflow-hidden shadow-lg relative group bg-gray-200">
+                    <img src="https://i.pinimg.com/1200x/02/a3/e8/02a3e8094019d004a4124580277466c5.jpg" class="w-full h-full object-cover gallery-img" alt="Lorong Chefchaouen" onclick="openLightbox(this.src)">
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-1 gap-4 h-32 md:h-96">
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/736x/96/9a/53/969a53a3c508efedada2b9887a7be65a.jpg" class="w-full h-full object-cover gallery-img" alt="Kota Biru Maroko" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-md relative group h-full bg-gray-200">
+                        <img src="https://i.pinimg.com/736x/93/5c/dc/935cdc15f219f8ea0be36b747cdb274e.jpg" class="w-full h-full object-cover gallery-img" alt="Kucing di Chefchaouen" onclick="openLightbox(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS CHEFCHAOUEN -->
+            <div class="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-6 md:p-10">
+                <div class="flex flex-wrap gap-2 md:gap-3 mb-8 border-b border-gray-100 pb-6">
+                    <button onclick="switchTab('cc', 'desc', this)" class="cc-tab-btn active-tab px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-arabgreen-600 text-white shadow-md shadow-arabgreen-100">Deskripsi</button>
+                    <button onclick="switchTab('cc', 'origin', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Asal Usul</button>
+                    <button onclick="switchTab('cc', 'culture', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Budaya</button>
+                    <button onclick="switchTab('cc', 'food', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Kuliner</button>
+                    <button onclick="switchTab('cc', 'funfact', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Fun Fact</button>
+                    <button onclick="switchTab('cc', 'tips', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200">Travel Tips</button>
+                    <button onclick="switchTab('cc', 'map', this)" class="cc-tab-btn px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-gray-100 text-gray-600 hover:bg-gray-200"><i class="fa-solid fa-map-location-dot mr-1 pointer-events-none"></i> Location</button>
+                </div>
+
+                <div class="relative min-h-[300px]">
+                    <div id="cc-desc" class="tab-pane active cc-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Mutiara Biru Maroko</h3>
+                        <p>Chefchaouen, yang sering dijuluki sebagai "Mutiara Biru", adalah sebuah kota memukau yang terletak di hamparan Pegunungan Rif, sebelah utara Maroko.</p>
+                        <p>Kota ini mendunia karena kawasan medina (kota tuanya) dipenuhi bangunan, lorong, jendela, hingga tangga yang dicat dengan berbagai spektrum warna biru yang indah dan menenangkan.</p>
+                    </div>
+
+                    <div id="cc-origin" class="tab-pane cc-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Sejarah Dibalik Warna Biru</h3>
+                        <p>Didirikan pada tahun 1471 sebagai benteng kecil untuk menahan invasi Portugis, kota ini kemudian menjadi tempat pengungsian bagi komunitas Muslim (Moor) dan Yahudi yang diusir dari Andalusia (Spanyol).</p>
+                        <p>Terdapat beberapa teori tentang warna biru di kota ini. Teori terkuat adalah tradisi Yahudi Sephardik; mereka mengecat rumah dengan warna biru yang melambangkan warna langit untuk mengingatkan umat manusia pada kekuatan spiritual Tuhan.</p>
+                    </div>
+
+                    <div id="cc-culture" class="tab-pane cc-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Akulturasi Berber dan Andalusia</h3>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/2 space-y-4 text-gray-700 leading-relaxed">
+                                <p>Budaya di Chefchaouen adalah percampuran unik antara Suku Amazigh (Berber) asli pegunungan Maroko dan keturunan Moorish-Spanyol. Hal ini terlihat dari arsitektur lengkungan khas Andalusia, atap ubin merah, dan pakaian tradisional lokal.</p>
+                                <p>Warga lokal masih membuat kerajinan tangan tradisional, menenun selimut wol tebal, dan merajut jubah *Djellaba* ikonik yang dipakai sehari-hari untuk menghalau dinginnya udara pegunungan.</p>
+                            </div>
+                            <div class="md:w-1/2 w-full">
+                                <img src="https://i.pinimg.com/1200x/8b/54/28/8b54286aa5e650f2c21063633baf2679.jpg" class="rounded-xl shadow-md w-full h-64 object-cover" alt="Kerajinan Chefchaouen">
+                                <p class="text-xs text-gray-400 mt-2 text-center italic">Warna-warni karpet tradisional Maroko yang kontras dengan dinding biru.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KULINER CHEFCHAOUEN (GRID 2 KARTU) -->
+                    <div id="cc-food" class="tab-pane cc-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Kuliner Khas Maroko</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card 1 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://i.pinimg.com/736x/43/70/59/4370594954444aec5ea0e6c5db097754.jpg" alt="Moroccan Tagine" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Moroccan Tagine</h4>
+                                    <p class="text-sm text-gray-600">Rebusan (stew) khas Afrika Utara berisi daging ayam segar, lemon awetan, zaitun hijau, dan rempah-rempah Maroko. Dimasak dan disajikan langsung menggunakan pot tanah liat berbentuk kerucut yang disebut 'Tagine' agar daging matang sangat empuk.</p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="bg-arabgreen-50/30 rounded-2xl overflow-hidden shadow-sm border border-arabgreen-100 hover:shadow-md transition">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB7GojBvTufsxzjGo6Q0IGSPygg9iIacVRtEamFlBwBQ&s=10" alt="Mint Tea" class="w-full h-48 object-cover">
+                                <div class="p-5">
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">Maghrebi Mint Tea</h4>
+                                    <p class="text-sm text-gray-600">Dikenal sebagai "Moroccan Whiskey", teh hijau ini diseduh dengan segenggam penuh daun mint segar dan gula balok dalam jumlah banyak. Dituangkan dari teko perak dengan posisi ditarik ke atas agar menciptakan lapisan busa di gelas kaca kecil.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cc-funfact" class="tab-pane cc-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Fakta Menarik</h3>
+                        <ul class="space-y-3">
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Anti Nyamuk:</strong> Beberapa penduduk lokal meyakini bahwa selain alasan religius, warna biru pada dinding mampu menangkal dan mengusir nyamuk.</li>
+                            <li><i class="fa-solid fa-star text-arabgreen-600 mr-2"></i> <strong>Kota Kucing:</strong> Seperti Istanbul, Chefchaouen adalah surga bagi ratusan kucing jalanan yang terawat baik dan hidup berdampingan dengan warga yang menganggap mereka hewan suci.</li>
+                        </ul>
+                    </div>
+
+                    <div id="cc-tips" class="tab-pane cc-pane text-gray-700 leading-relaxed space-y-4">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Travel Tips</h3>
+                        <p><strong>Tersesatlah dengan Bahagia:</strong> Medina (kota tua) ini sangat aman. Cara terbaik menikmati Chefchaouen adalah mematikan peta dan berjalan santai menyusuri labirin gang birunya yang sempit.</p>
+                        <p><strong>Spot Foto Terbaik:</strong> Pergilah ke jalan <em>Callejon El Asri</em> pada pagi hari sebelum pukul 09:00 jika Anda ingin mendapatkan foto ikonik tanpa kerumunan turis lain.</p>
+                    </div>
+
+                    <div id="cc-map" class="tab-pane cc-pane">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Lokasi Google Maps</h3>
+                        <div class="shadow-lg border border-gray-200 bg-gray-100 rounded-xl overflow-hidden relative">
+                            <iframe src="https://maps.google.com/maps?q=Chefchaouen,+Morocco&t=&z=14&ie=UTF8&iwloc=&output=embed" width="100%" height="400" style="border:0;" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- VOTING SECTION (LocalStorage) -->
+    <section class="bg-arabgreen-50/50 border-t border-arabgreen-100 py-24 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Mana Destinasi Favoritmu?</h2>
+            <p class="text-gray-600 mb-12 text-lg">Pilih salah satu permata tersembunyi Arab di bawah ini dan lihat destinasi mana yang paling disukai pengunjung lain!</p>
+            
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 relative">
+                
+                <!-- Opsi Tombol -->
+                <div id="vote-options" class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-500">
+                    <button onclick="castVote('alula')" class="group p-6 border-2 border-gray-100 hover:border-arabgreen-600 rounded-2xl transition duration-300 hover:shadow-lg hover:shadow-arabgreen-100 bg-gray-50 hover:bg-white flex flex-col items-center">
+                        <span class="text-5xl mb-4">🏛️</span>
+                        <span class="text-lg font-bold text-gray-800 mb-1">AlUla (Hegra)</span>
+                        <span class="text-xs text-gray-400 group-hover:text-arabgreen-600 font-medium transition uppercase">Vote</span>
+                    </button>
+                    <button onclick="castVote('wadishab')" class="group p-6 border-2 border-gray-100 hover:border-arabgreen-600 rounded-2xl transition duration-300 hover:shadow-lg hover:shadow-arabgreen-100 bg-gray-50 hover:bg-white flex flex-col items-center">
+                        <span class="text-5xl mb-4">🏞️</span>
+                        <span class="text-lg font-bold text-gray-800 mb-1">Wadi Shab</span>
+                        <span class="text-xs text-gray-400 group-hover:text-arabgreen-600 font-medium transition uppercase">Vote</span>
+                    </button>
+                    <button onclick="castVote('chefchaouen')" class="group p-6 border-2 border-gray-100 hover:border-arabgreen-600 rounded-2xl transition duration-300 hover:shadow-lg hover:shadow-arabgreen-100 bg-gray-50 hover:bg-white flex flex-col items-center">
+                        <span class="text-5xl mb-4">🧿</span>
+                        <span class="text-lg font-bold text-gray-800 mb-1">Chefchaouen</span>
+                        <span class="text-xs text-gray-400 group-hover:text-arabgreen-600 font-medium transition uppercase">Vote</span>
+                    </button>
+                </div>
+
+                <!-- Hasil Progress Bar (Hidden by Default) -->
+                <div id="vote-results" class="hidden text-left space-y-6">
+                    <div class="text-center mb-8">
+                        <span class="inline-block bg-arabgreen-50 text-arabgreen-600 px-4 py-2 rounded-full text-sm font-semibold border border-arabgreen-100">
+                            <i class="fa-solid fa-check mr-1"></i> Suara Anda tercatat!
+                        </span>
+                    </div>
+                    
+                    <div class="space-y-6 max-w-2xl mx-auto">
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-2">
+                                <span class="text-gray-800">AlUla, Saudi Arabia</span>
+                                <span id="res-alula" class="text-arabgreen-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3.5"><div id="bar-alula" class="bg-arabgreen-600 h-full rounded-full progress-bar" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-2">
+                                <span class="text-gray-800">Wadi Shab, Oman</span>
+                                <span id="res-wadishab" class="text-arabgreen-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3.5"><div id="bar-wadishab" class="bg-arabgreen-600 h-full rounded-full progress-bar" style="width: 0%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-2">
+                                <span class="text-gray-800">Chefchaouen, Morocco</span>
+                                <span id="res-chefchaouen" class="text-arabgreen-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3.5"><div id="bar-chefchaouen" class="bg-arabgreen-600 h-full rounded-full progress-bar" style="width: 0%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-arabgreen-600 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+            <div class="w-12 h-12 bg-arabgreen-600 rounded-full flex items-center justify-center text-white mb-4 shadow-lg shadow-arabgreen-600/30">
+                <i class="fa-solid fa-moon text-xl"></i>
+            </div>
+            <h2 class="font-extrabold text-3xl tracking-wide text-white mb-2">SIBEMA</h2>
+            <p class="text-gray-400 text-sm mb-8 font-light max-w-sm">Informasi dan Beasiswa. Menjelajahi keindahan, tradisi, dan sisi lain Timur Tengah dan Afrika Utara.</p>
+            
+            <a href="https://linktr.ee/himabsaunnesinfo_" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 bg-gray-800 hover:bg-gray-700 px-8 py-4 rounded-full transition-all duration-300 border border-gray-700 hover:border-arabgreen-600 group">
+                <i class="fa-solid fa-link text-xl text-arabgreen-500 group-hover:scale-110 transition"></i>
+                <div class="text-left leading-tight">
+                    <span class="block text-xs text-gray-400 uppercase tracking-wider font-semibold">Tautan Eksklusif</span>
+                    <span class="block text-sm font-bold text-white">Linktree HIMA</span>
+                </div>
+            </a>
+
+            <div class="w-full h-px bg-gray-800 mt-12 mb-6"></div>
+            <p class="text-xs text-gray-500 font-medium">&copy; 2024 SIBEMA. Discover Arab's Hidden Gems.</p>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX OVERLAY -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-gray-900/95 hidden flex items-center justify-center cursor-zoom-out" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 w-10 h-10 bg-white/10 hover:bg-arabgreen-600 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 scale-95" alt="Zoomed">
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Particles Animation (Arabian Gold/Stars)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random sizes for stars/particles
+            const size = Math.random() * 4 + 2; 
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            particle.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 5 + 6; 
+            particle.style.animationDuration = duration + 's';
+            particle.style.animationDelay = (Math.random() * 2) + 's';
+            
+            document.body.appendChild(particle);
+            setTimeout(() => { particle.remove(); }, duration * 1000 + 2000);
+        }
+        setInterval(createParticle, 400);
+
+        // 2. Typing Effect Hero Description
+        const textToType = "Timur Tengah dan Afrika Utara menyimpan pesona magis yang tak terlupakan. Mari jelajahi keindahan tersembunyi dari peradaban kuno hingga oasis yang menyejukkan.";
+        let i = 0;
+        function typeWriter() {
+            if (i < textToType.length) {
+                document.getElementById("typing-text").innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, 35);
+            } else {
+                document.getElementById("typing-text").classList.remove('typing-cursor'); 
+            }
+        }
+        setTimeout(typeWriter, 800);
+
+        // 3. Tabs Logic (Fixed click target)
+        function switchTab(destination, tabName, btnElement) {
+            // Guarantee we capture the button element even if icon is clicked (fallback)
+            const targetBtn = btnElement.closest('button');
+
+            // Hide all content panes for this section
+            const panes = document.querySelectorAll(`.${destination}-pane`);
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            // Reset buttons styles for this section to Gray
+            const btns = document.querySelectorAll(`.${destination}-tab-btn`);
+            btns.forEach(btn => {
+                btn.classList.remove('bg-arabgreen-600', 'text-white', 'shadow-md', 'shadow-arabgreen-100', 'active-tab');
+                btn.classList.add('bg-gray-100', 'text-gray-600');
+            });
+
+            // Show active pane
+            const targetPane = document.getElementById(`${destination}-${tabName}`);
+            if (targetPane) targetPane.classList.add('active');
+
+            // Apply active styles to clicked button (Emerald Green Theme)
+            targetBtn.classList.remove('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
+            targetBtn.classList.add('bg-arabgreen-600', 'text-white', 'shadow-md', 'shadow-arabgreen-100', 'active-tab');
+        }
+
+        // 4. Lightbox Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.remove('hidden');
+            setTimeout(() => { lightboxImg.classList.replace('scale-95', 'scale-100'); }, 10);
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeLightbox() {
+            lightboxImg.classList.replace('scale-100', 'scale-95');
+            lightbox.classList.add('hidden');
+            setTimeout(() => { lightboxImg.src = ""; }, 300);
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape" && !lightbox.classList.contains('hidden')) closeLightbox();
+        });
+
+        // 5. Scroll Reveal Intersection Observer
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 6. Voting Logic with LocalStorage (Arab Version Keys)
+        const dummyBaseArab = { alula: 420, wadishab: 588, chefchaouen: 712 };
+        const VOTE_KEY_ARAB = 'sibema_voted_arab_v1';
+        const COUNTS_KEY_ARAB = 'sibema_vote_counts_arab_v1';
+        
+        function getVotes() {
+            let data = localStorage.getItem(COUNTS_KEY_ARAB);
+            if(data) return JSON.parse(data);
+            return { alula: 0, wadishab: 0, chefchaouen: 0 };
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem(VOTE_KEY_ARAB) === 'true') showResults(false);
+        });
+
+        function castVote(choice) {
+            if(localStorage.getItem(VOTE_KEY_ARAB) === 'true') return; // Already voted
+            
+            let counts = getVotes();
+            counts[choice]++;
+            localStorage.setItem(COUNTS_KEY_ARAB, JSON.stringify(counts));
+            localStorage.setItem(VOTE_KEY_ARAB, 'true');
+            
+            showResults(true);
+        }
+
+        function showResults(animated) {
+            document.getElementById('vote-options').style.display = 'none';
+            const res = document.getElementById('vote-results');
+            res.classList.remove('hidden');
+
+            const counts = getVotes();
+            const tAl = dummyBaseArab.alula + counts.alula;
+            const tWs = dummyBaseArab.wadishab + counts.wadishab;
+            const tCc = dummyBaseArab.chefchaouen + counts.chefchaouen;
+            const total = tAl + tWs + tCc;
+
+            const pAl = Math.round((tAl / total) * 100);
+            const pWs = Math.round((tWs / total) * 100);
+            const pCc = Math.round((tCc / total) * 100);
+
+            document.getElementById('res-alula').innerText = pAl + '%';
+            document.getElementById('res-wadishab').innerText = pWs + '%';
+            document.getElementById('res-chefchaouen').innerText = pCc + '%';
+
+            if(animated) {
+                setTimeout(() => setBars(pAl, pWs, pCc), 100);
+            } else {
+                setBars(pAl, pWs, pCc);
+            }
+        }
+
+        function setBars(al, ws, cc) {
+            document.getElementById('bar-alula').style.width = al + '%';
+            document.getElementById('bar-wadishab').style.width = ws + '%';
+            document.getElementById('bar-chefchaouen').style.width = cc + '%';
+        }
+    </script>
+</body>
+</html>
